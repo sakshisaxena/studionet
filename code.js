@@ -27,7 +27,6 @@ dNodes = [
 
 ]
 
-
 dEdges =  [
 
       //moderator and module 
@@ -63,6 +62,18 @@ dEdges =  [
 
 ]     
 
+
+//gray out
+dNodes = dNodes.map(function(e){
+  e.data.faveColor = '#d9d9d9'
+  return e;
+})
+
+
+dEdges = dEdges.map(function(e){
+  e.data.faveColor = '#d9d9d9';
+  return e;
+})
 
 var cy = cytoscape({
   container: document.getElementById('cy'),
@@ -104,6 +115,7 @@ var cy = cytoscape({
         'source-arrow-color': 'data(faveColor)',
         'content' : 'data(label)',
         'font-size':'5%',
+        'color': '#d8d8d8',
         'edge-text-rotation': 'autorotate',
         'target-arrow-color': 'data(faveColor)'
       })
@@ -115,7 +127,7 @@ var cy = cytoscape({
     .selector('.faded')
       .css({
         'opacity': 0.25,
-        'text-opacity': 0
+        'text-opacity': 0.25
       }),
   
   elements: {
@@ -170,17 +182,30 @@ var cy = cytoscape({
 
 cy.on('mouseover','node', function(evt){
   var name = evt.cyTarget.data('name');
+  var data = evt.cyTarget.data();
   console.log( 'tap '+name   );
+
+  $('#activeUser').html("Type: " + data.type +"<br>Name:"+ data.name + "<br>ID:" + data.id);
   
   evt.cyTarget.css({ content: name});
+});
+
+cy.on('mouseout','node', function(evt){
+  var name = evt.cyTarget.data('name');
+
+  $('#activeUser').html("");
+  
+  evt.cyTarget.css({ content: ''});
 });
 
 cy.on('click','node', function(evt){
   var name = evt.cyTarget.data('name');
 
-  $('#activeUser').html(name);
+ // $('#activeUser').html(name);
   
-  evt.cyTarget.css({ content: name});
+  //evt.cyTarget.css({ content: name});
+  evt.cyTarget.css({ 'background-color': 'green'});
+  evt.cyTarget.css({ 'width': 10});
 });
 
 
